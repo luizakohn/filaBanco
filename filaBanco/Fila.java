@@ -11,7 +11,9 @@ public class Fila {
     public synchronized void adicionarCliente(Cliente cliente) {
         clientesPendentes.add(cliente);
     }
-
+    public boolean filaVazia() {
+        return fila.isEmpty();
+    }
     public synchronized void atualizarFila(int tempoAtual) {
         // Adiciona clientes que chegaram no tempo atual à fila
         clientesPendentes.removeIf(cliente -> {
@@ -31,7 +33,7 @@ public class Fila {
         }
     }
 
-    public synchronized void registrarAtendimento(Cliente cliente) {
+    public void registrarAtendimento(Cliente cliente) {
         atendidos.add(cliente);
     }
 
@@ -45,7 +47,6 @@ public class Fila {
         for (Cliente cliente : atendidos) {
             int tempoEspera = cliente.horaInicioAtendimento - cliente.horaChegada;
             int tempoBanco = cliente.horaSaida - cliente.horaChegada;
-
             tempoMaximoEspera = Math.max(tempoMaximoEspera, tempoEspera);
             tempoMaximoAtendimento = Math.max(tempoMaximoAtendimento, cliente.tempoAtendimento);
             tempoTotalBanco += tempoBanco;

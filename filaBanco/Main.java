@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        int[] numAtendentes = {2}; // Testar com diferentes números de atendentes
+        int[] numAtendentes = {2,3,4,5,6,7}; // Testar com diferentes números de atendentes
 
         for (int n : numAtendentes) {
             System.out.println("\nSimulação com " + n + " atendente(s):");
@@ -30,7 +30,10 @@ public class Main {
         }
 
         // Simula o relógio virtual
-        for (int tempoAtual = 0; tempoAtual <= 7200; tempoAtual++) {
+        int tempoAtual = 0;
+        fila.atualizarFila(tempoAtual);
+        while (tempoAtual <= 7200 || !fila.filaVazia()) {
+
             // Verifica se há clientes chegando no tempo atual
             fila.atualizarFila(tempoAtual);
 
@@ -38,14 +41,16 @@ public class Main {
             for (Atendente atendente : atendentes) {
                 if (!atendente.estaOcupado()) {
                     Cliente cliente = fila.removerCliente();
+                     // Registra o atendimento
                     if (cliente != null) {
                         atendente.atenderCliente(cliente, tempoAtual);
+                        fila.registrarAtendimento(cliente);
                     }
                 }
                 atendente.avancarTempo(tempoAtual);
             }
+            tempoAtual++;
         }
-
         // Coleta e exibe os dados estatísticos
         fila.gerarEstatisticas();
     }
